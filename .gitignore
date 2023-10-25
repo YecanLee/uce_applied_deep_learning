@@ -1,11 +1,3 @@
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
-*$py.class
-
-# C extensions
-*.so
-
 # IDE and OS
 .idea/
 .fleet/
@@ -20,12 +12,19 @@ pretrained/
 
 # working directories
 workdirs/
-
 # data directory
 data/
 
 # rsync
 rsync_exclude.txt
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
 
 # Distribution / packaging
 .Python
