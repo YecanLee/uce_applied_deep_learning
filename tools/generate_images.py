@@ -2,6 +2,7 @@ import os.path as osp
 import time
 from argparse import ArgumentParser
 
+import torch
 from mmengine import Config, DictAction, mkdir_or_exist
 
 from uce.generate import GENERATORS
@@ -37,11 +38,14 @@ def main():
     imgs_save_path = osp.join(work_dir, 'images')
     mkdir_or_exist(imgs_save_path)
 
+    device = torch.device(f'cuda:{args.gpu_id}')
+
     timestamp = time.strftime('%Y%m%d_%H%M%S', time.localtime(time.time()))
     log_file = osp.join(work_dir, f'{timestamp}.log')
     logger = setup_logger('uce', filepath=log_file)
 
     cfg = Config.fromfile(args.config)
+    cfg.generator.update({'device': device})
     logger.info(f"Using config:\n{'=' * 60}\n{cfg.pretty_text}\n{'=' * 60}\n")
 
     generator = GENERATORS.build(cfg.generator)
