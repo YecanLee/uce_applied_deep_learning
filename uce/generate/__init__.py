@@ -1,3 +1,5 @@
-from .generate_images import ImageGenerator
+from builder import GENERATORS
 
-__all__ = ['ImageGenerator']
+from .generator import ClassifierFreeGenerator
+
+__all__ = ['GENERATORS', 'ClassifierFreeGenerator']

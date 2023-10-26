@@ -9,9 +9,11 @@ from mmengine import ProgressBar, mkdir_or_exist
 from transformers import CLIPTextModel, CLIPTokenizer
 
 from ..utils import Device, batched_tensor_to_img_list, setup_logger
+from .builder import GENERATORS
 
 
-class ImageGenerator:
+@GENERATORS.register_module()
+class ClassifierFreeGenerator:
 
     def __init__(
         self,
