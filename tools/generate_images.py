@@ -23,6 +23,7 @@ def parse_args():
     parser.add_argument('--gpu-id', type=int, default=0, help='GPU ID.')
     parser.add_argument(
         '--cfg-options',
+        nargs='+',
         action=DictAction,
         help='key value pairs to override the config file entries. The pairs need to '
         'be in format of xxx=yyy')
