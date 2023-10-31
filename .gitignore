@@ -13,7 +13,9 @@ pretrained/
 # working directories
 workdirs/
 # data directory
-data/
+data/*
+!data/prompts/
+!data/prompts/*
 
 # rsync
 rsync_exclude.txt
