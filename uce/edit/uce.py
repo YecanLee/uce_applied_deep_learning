@@ -33,9 +33,9 @@ class UnifiedConceptEdit(BaseEditor):
         self.proj_matrices: List[nn.Module] = []
         self.og_matrices: List[nn.Module] = []
 
-        self.edited_old_texts: List[str] = []
-        self.edited_new_texts: List[str] = []
-        self.edited_ret_texts: List[str] = []
+        self.old_texts: List[str] = []
+        self.new_texts: List[str] = []
+        self.ret_texts: List[str] = []
 
         self.collect_edit_layers()
 
@@ -109,9 +109,9 @@ class UnifiedConceptEdit(BaseEditor):
         logger = setup_logger('uce')
         old_texts, new_texts, ret_texts = self.prepare_texts(
             old_texts, new_texts, ret_texts, logger=logger)
-        self.edited_old_texts.extend(old_texts)
-        self.edited_new_texts.extend(new_texts)
-        self.edited_ret_texts.extend(ret_texts)
+        self.old_texts.extend(old_texts)
+        self.new_texts.extend(new_texts)
+        self.ret_texts.extend(ret_texts)
 
         pbar = ProgressBar(len(self.proj_matrices))
         for layer_ind in range(len(self.proj_matrices)):
@@ -205,9 +205,16 @@ class UnifiedConceptEdit(BaseEditor):
             'erase_scale': self.erase_scale,
             'preserve_scale': self.preserve_scale,
             'with_to_k': self.with_to_k,
-            'edited_old_texts': self.edited_old_texts,
-            'edited_new_texts': self.edited_new_texts,
-            'edited_ret_texts': self.edited_ret_texts
+            'old_texts': self.old_texts,
+            'new_texts': self.new_texts,
+            'ret_texts': self.ret_texts
         }
 
         return sd_state_dict, meta_info
+
+    def load_state_dict(
+            self, state_dict: Dict[str, Any], meta_info: Dict[str, Any]) -> None:
+        self.sd_model.load_state_dict(state_dict)
+        self.old_texts = meta_info['old_texts']
+        self.new_texts = meta_info['new_texts']
+        self.ret_texts = meta_info['ret_texts']

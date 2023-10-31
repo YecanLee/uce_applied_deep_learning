@@ -1,6 +1,6 @@
 import string
 from abc import ABCMeta, abstractmethod
-from typing import Any, Dict, Tuple
+from typing import Any, Dict, Self, Tuple
 
 import numpy as np
 from diffusers import StableDiffusionPipeline
@@ -33,6 +33,15 @@ class BaseEditor(metaclass=ABCMeta):
     def id_code(self, id_code: str) -> None:
         self._id_code = id_code
 
+    def to(self, device: Device) -> Self:
+        self.sd_model.to(device)
+        return self
+
     @abstractmethod
     def state_dict(self) -> Tuple[Dict[str, Any], Dict[str, Any]]:
+        pass
+
+    @abstractmethod
+    def load_state_dict(
+            self, state_dict: Dict[str, Any], meta_info: Dict[str, Any]) -> None:
         pass

@@ -22,7 +22,7 @@ class ClassifierFreeGenerator:
         guidance_scale: float = 7.5,
         img_size: Tuple[int, int] = (512, 512),
         ddim_steps: int = 100,
-        num_samples: int = 10,
+        num_samples: int = 1,
         from_case: int = 0,
         till_case: int = 1000000,
         device: Device = 'cuda:0',

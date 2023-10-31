@@ -47,6 +47,8 @@ def main():
 
     cfg = Config.fromfile(args.config)
     cfg.generator.update({'device': device})
+    if args.cfg_options is not None:
+        cfg.update(args.cfg_options)
     logger.info(f"Using config:\n{'=' * 60}\n{cfg.pretty_text}\n{'=' * 60}\n")
 
     generator = GENERATORS.build(cfg.generator)
