@@ -8,7 +8,7 @@ from diffusers import AutoencoderKL, LMSDiscreteScheduler, UNet2DConditionModel
 from mmengine import ProgressBar, mkdir_or_exist
 from transformers import CLIPTextModel, CLIPTokenizer
 
-from ..utils import Device, batched_tensor_to_img_list, setup_logger
+from ..utils import Device, batched_tensor_to_img_list, manual_seed, setup_logger
 from .builder import GENERATORS
 
 
@@ -34,7 +34,7 @@ class ClassifierFreeGenerator:
         self.num_samples = num_samples
         self.from_case = from_case
         self.till_case = till_case
-        self.device = device
+        self.device = torch.device(device) if isinstance(device, str) else device
 
         if base == '2.1':
             model_version = 'stabilityai/stable-diffusion-2-1-base'
@@ -79,9 +79,9 @@ class ClassifierFreeGenerator:
             if not (self.from_case <= case_number <= self.till_case):
                 continue
 
-            generator = torch.manual_seed(seed)
             batch_size = len(prompt)
             img_height, img_width = self.img_size
+            manual_seed(seed)
 
             text_input = self.tokenizer(
                 prompt,
@@ -92,9 +92,7 @@ class ClassifierFreeGenerator:
             # text_embeddings: (batch_size, sequence_length, hidden_size)
             text_embeddings = self.text_encoder(text_input.input_ids.to(self.device))[0]
 
-            # TODO: check whether here should be shape[1],
-            #  since the text_embeddings.shape[-1] is the hidden_size
-            max_length = text_input.input_ids.shape[-1]
+            max_length = text_input.input_ids.shape[1]
             uncond_input = self.tokenizer(
                 ['' for _ in range(batch_size)],
                 padding='max_length',
@@ -105,13 +103,16 @@ class ClassifierFreeGenerator:
 
             text_embeddings = torch.cat([uncond_embeddings, text_embeddings])
             latents = torch.randn(
-                (batch_size, self.unet.in_channels, img_height // 8, img_width // 8),
-                generator=generator,
+                (
+                    batch_size,
+                    self.unet.config.in_channels,
+                    img_height // 8,
+                    img_width // 8),
                 device=self.device)
             self.scheduler.set_timesteps(self.ddim_steps)
             latents = latents * self.scheduler.init_noise_sigma
 
-            for t in range(self.scheduler.timesteps):
+            for t in self.scheduler.timesteps:
                 # expand teh latents if we are doing classifier-free guidance to avoid
                 #  doing two forward passes.
                 latent_model_input = torch.cat([latents] * 2)
@@ -134,7 +135,7 @@ class ClassifierFreeGenerator:
             for img_ind, img in enumerate(imgs):
                 img_path = osp.join(out_path, f'{case_number}_{img_ind}.png')
                 img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
-                cv2.imsave(img_path, img)
+                cv2.imwrite(img_path, img)
 
             pbar.update(1)
 

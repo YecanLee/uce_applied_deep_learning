@@ -3,6 +3,7 @@ from abc import ABCMeta, abstractmethod
 from typing import Any, Dict, Self, Tuple
 
 import numpy as np
+import torch
 from diffusers import StableDiffusionPipeline
 
 from ..utils import Device
@@ -17,7 +18,7 @@ class BaseEditor(metaclass=ABCMeta):
     ) -> None:
         self.sd_model = StableDiffusionPipeline.from_pretrained(
             **stable_diffusion).to(device)
-        self.device = device
+        self.device = torch.device(device) if isinstance(device, str) else device
         self._id_code = self.generate_id_code()
 
     @staticmethod
