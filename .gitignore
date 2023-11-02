@@ -11,7 +11,7 @@ pretrained/
 *.pt
 
 # working directories
-workdirs/
+workdirs
 # data directory
 data/*
 !data/prompts/
