@@ -35,4 +35,9 @@ python tools/generate_images.py \
 ```
 
 To generate images (using **edited** diffusion models). You need to specify the edited
-model's weights by adding `-c path/to/checkpoint.pt`
+model's weights by adding `-c path/to/checkpoint.pt`.
+
+To use your own prompts, you need to prepare a csv file that has the same format as
+`data/prompts/cars_prompts.csv`. Then, you need to specify the path to this
+prompt csv the config: `generator.prompts_path=path/to/your/file.csv`. Or you modify it
+in terminal by using `--cfg-options generator.prompts_path=path/to/your/file.csv`.
