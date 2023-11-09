@@ -1,6 +1,6 @@
 from copy import deepcopy
 from logging import Logger
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 import torch
 import torch.nn as nn
@@ -12,13 +12,27 @@ from .builder import EDITORS
 
 
 @EDITORS.register_module()
-class UnifiedConceptEdit(BaseEditor):
+class UnifiedConceptEditor(BaseEditor):
+    """UCE Algorithm.
+
+    Args:
+        stable_diffusion: Repository name of the Stable Diffusion.
+        lamb: Regularization parameter associated with the squared Frobenius norm
+            of the difference between edited and original projection matrices (in
+            the UNet).
+        erase_scale: A parameter controls the intensity of the concept erasing
+            (or updating) effect.
+        preserve_scale: A parameter controls the intensity of the concept preserving
+            effect.
+        with_to_k: If True, also update the projection matrices for the keys.
+        device: Device to perform the editing.
+    """
 
     def __init__(
             self,
-            stable_diffusion: Dict,
+            stable_diffusion: Union[str, Dict],
             lamb: float,
-            erase_scale: 0.1,
+            erase_scale: 1.0,
             preserve_scale: 0.1,
             with_to_k: bool = True,
             device: Device = 'cuda:0') -> None:
@@ -46,7 +60,7 @@ class UnifiedConceptEdit(BaseEditor):
             if 'up' in net[0] or 'down' in net[0]:
                 for block in net[1]:
                     if 'Cross' in block.__class__.__name__:
-                        for attn in block.attensions:
+                        for attn in block.attentions:
                             for transformer in attn.transformer_blocks:
                                 ca_layers.append(transformer.attn2)
             if 'mid' in net[0]:
@@ -124,10 +138,9 @@ class UnifiedConceptEdit(BaseEditor):
                 text_input = self.sd_model.tokenizer(
                     texts,
                     padding='max_length',
-                    max_length=self.sd_model.model_max_length,
+                    max_length=self.sd_model.tokenizer.model_max_length,
                     truncation=True,
-                    return_tensor='pt')
-
+                    return_tensors='pt')
                 text_embeddings = self.sd_model.text_encoder(
                     text_input.input_ids.to(self.device))[0]
 
@@ -199,7 +212,7 @@ class UnifiedConceptEdit(BaseEditor):
         pbar.file.flush()
 
     def state_dict(self) -> Tuple[Dict[str, Any], Dict[str, Any]]:
-        sd_state_dict = self.sd_model.state_dict()
+        unet_state_dict = self.sd_model.unet.state_dict()
         meta_info = {
             'lamb': self.lamb,
             'erase_scale': self.erase_scale,
@@ -210,11 +223,11 @@ class UnifiedConceptEdit(BaseEditor):
             'ret_texts': self.ret_texts
         }
 
-        return sd_state_dict, meta_info
+        return unet_state_dict, meta_info
 
     def load_state_dict(
             self, state_dict: Dict[str, Any], meta_info: Dict[str, Any]) -> None:
-        self.sd_model.load_state_dict(state_dict)
+        self.sd_model.unet.load_state_dict(state_dict)
         self.old_texts = meta_info['old_texts']
         self.new_texts = meta_info['new_texts']
         self.ret_texts = meta_info['ret_texts']

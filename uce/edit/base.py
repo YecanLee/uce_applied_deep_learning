@@ -1,6 +1,6 @@
 import string
 from abc import ABCMeta, abstractmethod
-from typing import Any, Dict, Self, Tuple
+from typing import Any, Dict, Tuple, Union
 
 import numpy as np
 import torch
@@ -13,11 +13,16 @@ class BaseEditor(metaclass=ABCMeta):
 
     def __init__(
         self,
-        stable_diffusion: Dict,
+        stable_diffusion: Union[str, Dict],
         device: Device = 'cuda:0',
     ) -> None:
-        self.sd_model = StableDiffusionPipeline.from_pretrained(
-            **stable_diffusion).to(device)
+        if isinstance(stable_diffusion, Dict):
+            sd_model = StableDiffusionPipeline.from_pretrained(
+                **stable_diffusion).to(device)
+        else:
+            sd_model = StableDiffusionPipeline.from_pretrained(stable_diffusion).to(
+                device)
+        self.sd_model = sd_model
         self.device = torch.device(device) if isinstance(device, str) else device
         self._id_code = self.generate_id_code()
 
@@ -34,7 +39,7 @@ class BaseEditor(metaclass=ABCMeta):
     def id_code(self, id_code: str) -> None:
         self._id_code = id_code
 
-    def to(self, device: Device) -> Self:
+    def to(self, device: Device) -> Any:
         self.sd_model.to(device)
         return self
 

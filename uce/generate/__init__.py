@@ -1,4 +1,4 @@
 from .builder import GENERATORS
-from .generator import ClassifierFreeGenerator
+from .generator import StableDiffusionGenerator
 
-__all__ = ['GENERATORS', 'ClassifierFreeGenerator']
+__all__ = ['GENERATORS', 'StableDiffusionGenerator']

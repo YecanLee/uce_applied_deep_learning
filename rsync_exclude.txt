@@ -9,5 +9,7 @@ __pycache__/
 .pytest_cache/
 .mypy_cache/
 
-data
+data/
+!/data/prompts/
+!/data/prompts/*
 workdirs

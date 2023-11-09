@@ -46,6 +46,7 @@ def parse_args() -> Namespace:
         "'image of {concept}'. Otherwise, no extra concepts will be used.")
     parser.add_argument(
         '--work-dir',
+        '-w',
         default='./workdirs/default/',
         help='Directory to save the output files.')
     parser.add_argument(
@@ -55,8 +56,11 @@ def parse_args() -> Namespace:
         'edit the given model weight, otherwise edit the pre-trained model '
         'weight. ')
     parser.add_argument(
-        '--meta-info', '-m', help='Path to the meta info json file of the editor.')
-    parser.add_argument('--gpu-id', type=int, help='GPU ID.')
+        '--meta-info',
+        '-m',
+        help='Path to the meta info json file of the editor. Only needed if you '
+        'wanna load a previously used editor and continue editing the model.')
+    parser.add_argument('--gpu-id', type=int, default=0, help='GPU ID.')
     parser.add_argument(
         '--cfg-options',
         nargs='+',
@@ -79,7 +83,7 @@ def main():
     logger = setup_logger('uce', filepath=log_file)
 
     cfg = Config.fromfile(args.config)
-    cfg.generator.update({'device': device})
+    cfg.editor.update({'device': device})
     if args.cfg_options is not None:
         cfg.merge_from_dict(args.cfg_options)
     logger.info(f"Using config:\n{'=' * 60}\n{cfg.pretty_text}\n{'=' * 60}\n")
