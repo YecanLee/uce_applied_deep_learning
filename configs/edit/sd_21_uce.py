@@ -1,6 +1,6 @@
 editor = dict(
     type='UnifiedConceptEditor',
-    stable_diffusion='CompVis/stable-diffusion-v1-4',
+    stable_diffusion='stabilityai/stable-diffusion-2-1-base',
     lamb=0.5,
     erase_scale=1.0,
     preserve_scale=0.1,

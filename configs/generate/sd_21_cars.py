@@ -1,7 +1,7 @@
 generator = dict(
     type='StableDiffusionGenerator',
     prompts_path='data/prompts/cars_prompts.csv',
-    stable_diffusion='CompVis/stable-diffusion-v1-4',
+    stable_diffusion='stabilityai/stable-diffusion-2-1-base',
     inference_cfg=dict(
         guidance_scale=7.5,
         height=512,

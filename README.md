@@ -15,7 +15,7 @@ To erase multiple concepts e.g. "car,bicycle,bus". Please refer to
 
 ```shell
 python tools/edit_model.py \
-  configs/edit/sd_14_uce.py \
+  configs/edit/sd_21_uce.py \
   "car,bicyle,bus"
   -w workdirs/debug/
 ```
@@ -29,7 +29,7 @@ to index 10, and generate 10 samples for each prompt. See `tools/generate_images
 for detailed usage hints.
 ```shell
 python tools/generate_images.py \
-  configs/generate/sd_14_cars.py \
+  configs/generate/sd_21_cars.py \
   -w workdirs/debug/ \
   --cfg-options generator.till_case=10 generator.inference_cfg.num_images_per_prompt=10
 ```
