@@ -2,7 +2,7 @@
 .idea/
 .fleet/
 .vscode/
-.DS_store/
+.DS_Store
 
 # # pretrained models
 pretrained/
