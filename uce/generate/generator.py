@@ -84,5 +84,3 @@ class StableDiffusionGenerator:
                     img.save(img_path)
 
                 bar()
-
-        logger.info(f'Generated images are saved to: {out_path}')
