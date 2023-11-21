@@ -7,7 +7,7 @@ generator = dict(
         height=512,
         width=512,
         num_inference_steps=100,
-        num_images_per_prompt=1,
+        num_images_per_prompt=10,
     ),
     from_case=0,
     till_case=1000000,
