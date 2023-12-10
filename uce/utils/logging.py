@@ -37,8 +37,10 @@ def setup_logger(
 
     if distributed_rank is None:
         import torch.distributed as dist
-
-        distributed_rank = dist.get_rank()
+        if dist.is_initialized():
+            distributed_rank = dist.get_rank()
+        else:
+            distributed_rank = 0
 
     # Remove previous handlers
     if distributed_rank > 0 or reset:
