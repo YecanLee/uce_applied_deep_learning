@@ -36,9 +36,9 @@ def setup_logger(
     logger = logging.getLogger(name)
 
     if distributed_rank is None:
-        import ignite.distributed as idist
+        import torch.distributed as dist
 
-        distributed_rank = idist.get_rank()
+        distributed_rank = dist.get_rank()
 
     # Remove previous handlers
     if distributed_rank > 0 or reset:
