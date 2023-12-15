@@ -1,0 +1,2 @@
+class IBAInterrupt(Exception):
+    pass
