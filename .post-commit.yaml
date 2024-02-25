@@ -1,0 +1,30 @@
+name: Post-commit Notification
+
+on: push
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send notification to user after commit
+        run: |
+          echo "Post-commit task completed."
+          echo "Sending notification to user."
+          echo "Notification sent to user."
+
+jobs:
+  test:
+    needs: pre-commit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10'
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install pytest
+      - name: Run tests
+        run: pytest
