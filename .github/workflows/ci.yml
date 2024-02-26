@@ -7,14 +7,14 @@ on:
       - meimingweili
       - cipool041
       - mikey
-      - placeholder3
+      - iris
   pull_request:
     branches:
       - main
       - meimingweili
       - cipool041
       - mikey
-      - placeholder3
+      - iris
 
 
 jobs:
@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [ubutu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python
@@ -33,9 +33,9 @@ jobs:
 
       - name: Cache Python dependencies
         run: |
-          pip -m pip install --upgrade pip
+          python -m pip install --upgrade pip
           pip install pytest
           echo "Dependencies have been successfully installed"
       - name: Run tests
-        run: pytest
+        run: pytest tests/
 
