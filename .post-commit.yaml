@@ -12,3 +12,18 @@ jobs:
           echo "Sending notification to user."
           echo "Notification sent to user."
 
+  test:
+    needs: notify
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10'
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install pytest
+      - name: Run tests
+        run: pytest
