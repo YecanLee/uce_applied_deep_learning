@@ -26,3 +26,4 @@ def test_editor_config_file():
     assert config_file['editor']['preserve_scale'] == 0.1, (
         'This preserve scale value is mismatched')
     assert config_file['editor']['with_to_k'], ('This with_to_k value is mismatched')
+    
