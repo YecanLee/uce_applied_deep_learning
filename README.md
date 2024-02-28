@@ -4,8 +4,9 @@ This is a re-implementation of the paper _Unified Concept Editing in Diffusion M
 ## Installation
 Install your package in editable mode via `pip install -e .` (do not forget the ".").
 
-## Optional (For developers)
+## Pre-Commit 
 Install pre-commit hooks via `pre-commit install`.
+Run `pre-commit run --all-files` before pushing.
 
 ## Commands
 
@@ -41,3 +42,13 @@ To use your own prompts, you need to prepare a csv file that has the same format
 `data/prompts/cars_prompts.csv`. Then, you need to specify the path to this
 prompt csv the config: `generator.prompts_path=path/to/your/file.csv`. Or you modify it
 in terminal by using `--cfg-options generator.prompts_path=path/to/your/file.csv`.
+
+Before we change the concept in the prompts from 'penguin' to 'tourists'
+![uce_applied_deep_learning ice_nochanged.png](https://raw.githubusercontent.com/YecanLee/uce_applied_deep_learning/master/images/ice_nochanged.png)
+After we change the concept in the prompts from 'penguin' to 'tourists'
+![uce_applied_deep_learning ice_changed.png](https://raw.githubusercontent.com/YecanLee/uce_applied_deep_learning/master/images/ice_changed.png)
+
+Before we remove the 'railway' concept in the prompts 'a train on the railway'
+![uce_applied_deep_learning train_no_modi.png](https://raw.githubusercontent.com/YecanLee/uce_applied_deep_learning/master/images/train_no_modi.png)
+After we remove the 'railway' concept in the prompts 'a train on the railway'
+![uce_applied_deep_learning train_with_modi.png](https://raw.githubusercontent.com/YecanLee/uce_applied_deep_learning/master/images/train_with_modi.png)
