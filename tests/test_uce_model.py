@@ -3,10 +3,6 @@ from transformers import AutoModel
 
 from edit.uce import UnifiedConceptEditor
 
-# Download the models before running the tests
-AutoModel.from_pretrained('stabilityai/stable-diffusion-2-1-base')
-AutoModel.from_pretrained('runwayml/stable-diffusion-v1-5')
-
 
 def test_model_uce():
     """Compare if the parameters of the model are stable."""
