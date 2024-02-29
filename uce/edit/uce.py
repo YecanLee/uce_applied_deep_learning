@@ -6,7 +6,7 @@ import torch
 import torch.nn as nn
 from mmengine import ProgressBar
 
-from utils import Device, setup_logger
+from ..utils import Device, setup_logger
 from .base import BaseEditor
 from .builder import EDITORS
 
