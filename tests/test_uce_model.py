@@ -1,5 +1,6 @@
 import torch
-from edit.uce import UnifiedConceptEditor
+
+from uce.edit.uce import UnifiedConceptEditor
 
 
 def test_model_uce():
