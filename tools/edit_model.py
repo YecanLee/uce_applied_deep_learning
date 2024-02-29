@@ -2,9 +2,8 @@ import os.path as osp
 import time
 from argparse import ArgumentParser, Namespace
 
-from mmengine import Config, DictAction, mkdir_or_exist
-
 from edit import EDITORS, load_editor, parse_concepts, save_editor
+from mmengine import Config, DictAction, mkdir_or_exist
 from utils import setup_logger
 
 
