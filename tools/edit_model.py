@@ -2,9 +2,9 @@ import os.path as osp
 import time
 from argparse import ArgumentParser, Namespace
 
-from edit import EDITORS, load_editor, parse_concepts, save_editor
+from uce.edit import EDITORS, load_editor, parse_concepts, save_editor
 from mmengine import Config, DictAction, mkdir_or_exist
-from utils import setup_logger
+from uce.utils import setup_logger
 
 
 def parse_args() -> Namespace:
