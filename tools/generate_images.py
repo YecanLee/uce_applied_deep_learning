@@ -2,9 +2,8 @@ import os.path as osp
 import time
 from argparse import ArgumentParser
 
-from mmengine import Config, DictAction, mkdir_or_exist
-
 from generate import GENERATORS
+from mmengine import Config, DictAction, mkdir_or_exist
 from utils import setup_logger
 
 
