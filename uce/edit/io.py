@@ -5,7 +5,7 @@ import numpy as np
 import torch
 from mmengine import dump, load
 
-from utils import setup_logger
+from ..utils import setup_logger
 from .base import BaseEditor
 
 
