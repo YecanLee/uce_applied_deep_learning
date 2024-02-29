@@ -5,7 +5,8 @@ from typing import Any, Dict, Tuple, Union
 import numpy as np
 import torch
 from diffusers import StableDiffusionPipeline
-from utils import Device
+
+from ..utils import Device
 
 
 class BaseEditor(metaclass=ABCMeta):
