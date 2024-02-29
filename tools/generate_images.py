@@ -2,8 +2,9 @@ import os.path as osp
 import time
 from argparse import ArgumentParser
 
-from uce.generate import GENERATORS
 from mmengine import Config, DictAction, mkdir_or_exist
+
+from uce.generate import GENERATORS
 from uce.utils import setup_logger
 
 
